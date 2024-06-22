@@ -1,9 +1,9 @@
 {
     "domain": "delonghi_pac_n90_customized",
     "name": "DeLonghi PAC N90 Customized AC",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "codeowners": ["@HeLau1337"],
-    "config_flow": false,
+    "config_flow": true,
     "dependencies": [],
     "dhcp": [
       {
