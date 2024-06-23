@@ -13,6 +13,7 @@ class EspIrRemoteApiClient:
     """Handles communication with the ESP8266 webserver API endpoint for setting the AC unit's state by sending the corresponding infrared signals."""
 
     DELONGHI_AC_ENDPOINT = "delonghi-ac"
+    DEFAULT_TIMEOUT = 60
 
     def __init__(self, base_url: str, session: aiohttp.ClientSession) -> None:
         """Initialize the API by setting the base url."""
@@ -21,7 +22,7 @@ class EspIrRemoteApiClient:
 
     async def async_test_connection(self) -> bool:
         """Test the connection to the base url."""
-        async with self._session.get(f"{self._base_url}/", timeout=600) as response:
+        async with self._session.get(f"{self._base_url}/", timeout=self.DEFAULT_TIMEOUT) as response:
             return response.status == 200
 
     async def async_set_state(
@@ -40,12 +41,12 @@ class EspIrRemoteApiClient:
             params["temperature"] = str(int(target_temperature))
 
         async with self._session.get(
-            f"{self._base_url}/{self.DELONGHI_AC_ENDPOINT}", params=params, timeout=600
+            f"{self._base_url}/{self.DELONGHI_AC_ENDPOINT}", params=params, timeout=self.DEFAULT_TIMEOUT
         ) as response:
-            # _LOGGER.debug(
-            #    "Sent GET request: %s",
-            #    response.url,
-            # )
+            _LOGGER.debug(
+               "Sent GET request was: %s",
+               response.url,
+            )
             if response.status == 200:
                 _LOGGER.debug(
                     "Response status code: %s | Response text: %s",
