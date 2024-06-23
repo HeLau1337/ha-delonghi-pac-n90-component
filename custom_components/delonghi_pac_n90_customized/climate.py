@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import logging
 from pprint import pformat
 from typing import Any
@@ -87,7 +88,7 @@ class DeLonghiPACN90(ClimateEntity):
         self._name = climate[CONF_NAME]
         self._api: EspIrRemoteApiClient = climate[CONF_API]
         self._fan_mode = FAN_LOW
-        self._hvac_mode: HVACMode = HVACMode.FAN_ONLY
+        self._hvac_mode: HVACMode = HVACMode.OFF
         self._target_temperature = 24.0
         self._last_state_before_turn_off = self
 
@@ -156,12 +157,8 @@ class DeLonghiPACN90(ClimateEntity):
 
     async def async_turn_off(self) -> None:
         """Turn the entity off."""
-        self._last_state_before_turn_off = self
-        response = await self._api.async_set_state(
-            HVACMode.OFF,
-            self._fan_mode,
-            self._target_temperature,
-        )
+        self._last_state_before_turn_off = deepcopy(self)
+        response = await self._api.async_set_state(HVACMode.OFF)
         if response.status == 200:
             self._hvac_mode = HVACMode.OFF
         else:
