@@ -86,6 +86,7 @@ class DeLonghiPACN90(ClimateEntity):
     def __init__(self, climate) -> None:
         """Initialize the climate device."""
         self._name = climate[CONF_NAME]
+        self._base_url = climate[CONF_BASE_URL]
         self._api: EspIrRemoteApiClient = climate[CONF_API]
         self._fan_mode = FAN_LOW
         self._hvac_mode: HVACMode = HVACMode.OFF
