@@ -93,10 +93,21 @@ class DeLonghiPACN90(ClimateEntity):
         self._last_state_before_turn_off = self
 
     @property
+    def unique_id(self) -> str:
+        """Return the unique ID for this AC unit.
+
+        Combines the ESP's base URL with a device-specific suffix
+        to allow multiple devices per ESP.
+        """
+        clean_url = self._base_url.replace("http://", "").replace("https://", "").strip("/")
+        # Suffix specifies the target device
+        return f"{DOMAIN}_{clean_url}_delonghi_ac"
+
+    @property
     def device_info(self) -> DeviceInfo:
         """Information about this entity/device."""
         return {
-            "identifiers": {(DOMAIN, self._roller.roller_id)},
+            "identifiers": {(DOMAIN, self.unique_id)},
             # If desired, the name for the device could be different to the entity
             "name": self._name,
             "sw_version": "1.0",

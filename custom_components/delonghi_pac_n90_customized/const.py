@@ -1,10 +1,8 @@
 """Constants for the DeLonghi PAC N90 Customized AC integration."""
 
-from homeassistant.components import climate
+from homeassistant.components.climate import HVACMode
 
 DOMAIN = "delonghi_pac_n90_customized"
-
-HVACMode = climate.const.HVACMode
 
 HA_TO_DELONGHI_HVAC = {
     HVACMode.COOL: "air-conditioning",
